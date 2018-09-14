@@ -2,7 +2,6 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from tensorflow.examples.tutorials.mnist import input_data
 
-
 mnist = input_data.read_data_sets("MNIST_data/",one_hot=True)
 type(mnist)
 
@@ -36,7 +35,7 @@ with tf.Session() as sess:
     
     accuracy = tf.reduce_mean(tf.cast(matches,"float"))
     
-    print(sess.run(accuracy,feed_dict={
+    print(sess.run(accuracy, feed_dict={
         x:mnist.test.images,
         y_true:mnist.test.labels
     }))
