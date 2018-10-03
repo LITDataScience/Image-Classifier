@@ -1,5 +1,1 @@
-tensorflow
-numpy
-matplotlib
-pandas
-sklearn
+pytesseract

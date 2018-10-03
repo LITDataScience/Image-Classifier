@@ -73,12 +73,13 @@ convo_2_pooling = max_pool_2x2(convo_2)
 
 # Why 7 by 7 image? Because we did 2 pooling layers, so (28/2)/2 = 7
 # 64 then just comes from the output of the previous Convolution
-convo_2_flat = tf.reshape(convo_2_pooling,[-1,7*7*64])
-full_layer_one = tf.nn.relu(normal_full_layer(convo_2_flat,1024))
+convo_2_flat = tf.reshape(convo_2_pooling, [-1,7*7*64])
+## Using rectified linear unit for activation
+full_layer_one = tf.nn.relu(normal_full_layer(convo_2_flat,1024)) # 1024 = no. of neurons
 
 
 # NOTE THE PLACEHOLDER HERE!
-hold_prob = tf.placeholder(tf.float32)
+hold_prob = tf.placeholder(tf.float32) # created holding probabilities
 full_one_dropout = tf.nn.dropout(full_layer_one,keep_prob=hold_prob)
 
 
@@ -97,22 +98,18 @@ init = tf.global_variables_initializer()
 steps = 5000
 
 with tf.Session() as sess:
+    score = None
     sess.run(init)
-
     for i in range(steps):
-
         batch_x, batch_y = mnist.train.next_batch(50)
-
         sess.run(train, feed_dict={x: batch_x, y_true: batch_y, hold_prob: 0.5})
-
         # PRINT OUT A MESSAGE EVERY 100 STEPS
         if i % 100 == 0:
             print('Currently on step {}'.format(i))
-            print('Accuracy is:')
+            print('Training Accuracy is: ', score)
             # Test the Train Model
             matches = tf.equal(tf.argmax(y_pred, 1), tf.argmax(y_true, 1))
-
+            # we have booleans, but we're casting here to floats to take the average accuracy score.
             acc = tf.reduce_mean(tf.cast(matches, tf.float32))
-
-            print(sess.run(acc, feed_dict={x: mnist.test.images, y_true: mnist.test.labels, hold_prob: 1.0}))
-            print('\n')
+            ### During prediction/test, we don't want any neuron to be dropped. Hence, dropout = 1
+            score = sess.run(acc, feed_dict={x: mnist.test.images, y_true: mnist.test.labels, hold_prob: 1.0})
