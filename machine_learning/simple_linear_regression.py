@@ -8,10 +8,12 @@ from keras.models import Model
 from sklearn.preprocessing import MinMaxScaler, Normalizer
 
 
-dataset = pd.read_csv("G:\\AI\\Deep-MNIST-image-Classifier\\data\\Salary_Data.csv")
+dataset = pd.read_csv("./data/Salary_Data.csv")
 
 x = dataset.values.reshape(-1,1).astype(np.float64)
+print(x)
 y = dataset.values.reshape(-1,1).astype(np.float64)
+print(y)
 
 inputs = Input(shape=(1,))
 preds = Dense(1,activation='linear')(inputs)
