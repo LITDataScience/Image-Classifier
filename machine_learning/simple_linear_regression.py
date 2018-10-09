@@ -8,7 +8,7 @@ from keras.models import Model
 from sklearn.preprocessing import MinMaxScaler, Normalizer
 
 
-dataset = pd.read_csv("./data/Salary_Data.csv")
+dataset = pd.read_csv("/home/starlord/Desktop/DEEP-MNIST-IMAGE-CLASSIFIER/Deep-MNIST-image-Classifier/data/Salary_Data.csv")
 
 x = dataset.values.reshape(-1,1).astype(np.float64)
 print(x)
